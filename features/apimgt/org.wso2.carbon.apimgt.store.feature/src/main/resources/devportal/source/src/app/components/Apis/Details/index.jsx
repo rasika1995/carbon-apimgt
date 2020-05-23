@@ -59,7 +59,7 @@ const LoadableSwitch = withRouter((props) => {
     let tryoutRoute;
     if (api.type === 'GRAPHQL') {
         tryoutRoute = <Route path='/apis/:apiUuid/test' component={GraphQLConsole} />
-    } else {
+    }else {
         tryoutRoute = <Route path='/apis/:apiUuid/test' component={ApiConsole} />
     }
 
@@ -128,6 +128,7 @@ const styles = (theme) => {
             overflowY: 'auto',
         },
         leftMenuVerticalRight: {
+            width: theme.custom.leftMenu.width,
             top: 0,
             right: 0,
             overflowY: 'auto',
@@ -172,13 +173,15 @@ const styles = (theme) => {
             marginRight: shiftToRightMinView,
             paddingBottom: theme.spacing(3),
         },
+        shiftLeft: {
+            marginLeft: 0,
+        },
         contentLoader: {
             paddingTop: theme.spacing(3),
         },
         contentLoaderRightMenu: {
             paddingRight: theme.custom.leftMenu.width,
         },
-        
     };
 };
 /**
@@ -226,7 +229,7 @@ class Details extends React.Component {
                         Alert.error(message);
                     }
                     console.error('Error when getting apis', error);
-                    if (status === 404) {
+                    if (status === 404 || status === 403) {
                         this.setState({ notFound: true });
                     }
                 });
@@ -359,6 +362,9 @@ class Details extends React.Component {
         if (!api && notFound) {
             return <ResourceNotFound />;
         }
+        // check for widget=true in the query params. If it's present we render without <Base> component.
+        const pageUrl = new URL(window.location);
+        const isWidget = pageUrl.searchParams.get('widget');
 
         return api ? (
             <ApiContext.Provider value={this.state}>
@@ -366,12 +372,100 @@ class Details extends React.Component {
                     <title>{`${prefix} ${api.name}${sufix}`}</title>
                 </Helmet>
                 <style>{globalStyle}</style>
+                {!isWidget && (
+                    <div
+                        className={classNames(
+                            classes.leftMenu,
+                            {
+                                [classes.leftMenuHorizontal]: position === 'horizontal',
+                            },
+                            {
+                                [classes.leftMenuVerticalLeft]: position === 'vertical-left',
+                            },
+                            {
+                                [classes.leftMenuVerticalRight]: position === 'vertical-right',
+                            },
+                            'left-menu',
+                        )}
+                    >
+                        {rootIconVisible && (
+                            <Link to='/apis' className={classes.leftLInkMain}>
+                                <CustomIcon width={rootIconSize} height={rootIconSize} icon='api' />
+                                {rootIconTextVisible && (
+                                    <Typography className={classes.leftLInkMainText}>
+                                        <FormattedMessage id='Apis.Details.index.all.apis' defaultMessage='ALL APIs' />
+                                    </Typography>
+                                )}
+                            </Link>
+                        )}
+                        <LeftMenuItem
+                            text={<FormattedMessage id='Apis.Details.index.overview' defaultMessage='Overview' />}
+                            route='overview'
+                            iconText='overview'
+                            to={pathPrefix + 'overview'}
+                        />
+                        {!api.advertiseInfo.advertised && (
+                            <>
+                                {user && showCredentials && (
+                                    <>
+                                        <LeftMenuItem
+                                            text={
+                                                <FormattedMessage
+                                                    id='Apis.Details.index.subscriptions'
+                                                    defaultMessage='Subscriptions'
+                                                />
+                                            }
+                                            route='credentials'
+                                            iconText='credentials'
+                                            to={pathPrefix + 'credentials'}
+                                        />
+                                    </>
+                                )}
+                                {api.type !== 'WS' && showTryout && (
+                                    <LeftMenuItem
+                                        text={<FormattedMessage id='Apis.Details.index.try.out' defaultMessage='Try out' />}
+                                        route='test'
+                                        iconText='test'
+                                        to={pathPrefix + 'test'}
+                                    />
+                                )}
+                                {showComments && (
+                                    <LeftMenuItem
+                                        text={
+                                            <FormattedMessage id='Apis.Details.index.comments' defaultMessage='Comments' />
+                                        }
+                                        route='comments'
+                                        iconText='comments'
+                                        to={pathPrefix + 'comments'}
+                                    />
+                                )}
+                            </>
+                        )}
+                        {showDocuments && (
+                            <LeftMenuItem
+                                text={<FormattedMessage id='Apis.Details.index.documentation' defaultMessage='Documentation' />}
+                                route='documents'
+                                iconText='docs'
+                                to={pathPrefix + 'documents'}
+                            />
+                        )}
+                        {!api.advertiseInfo.advertised && api.type !== 'WS' && showSdks && (
+                            <LeftMenuItem
+                                text={<FormattedMessage id='Apis.Details.index.sdk' defaultMessage='SDKs' />}
+                                route='sdk'
+                                iconText='sdk'
+                                to={pathPrefix + 'sdk'}
+                            />
+                        )}
+                    </div>
+                )}
+                <div className={classNames(classes.content, { [classes.shiftLeft]: isWidget })}>
 
                 <div
                     className={classNames(
                         classes.leftMenu,
                         {
-                            [classes.leftMenuHorizontal]: position === 'horizontal' 
+                            [classes.leftMenuHorizontal]: position === 'horizontal'
                         },
                         {
                             [classes.leftMenuVerticalLeft]: position === 'vertical-left' && open,
@@ -483,7 +577,7 @@ class Details extends React.Component {
 
                 </div>
 
-                <div 
+                <div
                     className={classNames(
                         { [classes.content]: open },
                         { [classes.contentExpandView]: !open },
@@ -499,7 +593,6 @@ class Details extends React.Component {
                         <LoadableSwitch api={api} updateSubscriptionData={this.updateSubscriptionData} />
                     </div>
                 </div>
-
             </ApiContext.Provider>
         ) : (
                 <div className='apim-dual-ring' />
