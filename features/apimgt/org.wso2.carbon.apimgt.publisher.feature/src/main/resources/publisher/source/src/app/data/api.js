@@ -2442,6 +2442,14 @@ class API extends Resource {
             );
         });
     }
+    static keyManagers() {
+        const apiClient = new APIClientFactory().getAPIClient(Utils.getCurrentEnvironment()).client;
+        return apiClient.then(client => {
+            return client.apis["Key Managers (Collection)"].get_key_managers(
+                this._requestMetaData(),
+            );
+        });
+    }
 }
 
 

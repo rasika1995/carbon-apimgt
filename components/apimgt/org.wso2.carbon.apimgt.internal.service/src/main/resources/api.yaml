@@ -714,7 +714,7 @@ definitions:
     allOf:
     - $ref: '#/definitions/Policy'
     - $ref: '#/definitions/GraphQLQuery'
-    properties:
+    - properties:
       rateLimitCount:
         type: integer
       rateLimitTimeUnit:
@@ -783,8 +783,8 @@ definitions:
   ApiPolicy:
     allOf:
     - $ref: '#/definitions/Policy'
-    properties:
-      conditionGroups:
+    - properties:
+       conditionGroups:
         type: array
         items:
           $ref: '#/definitions/ApiPolicyConditionGroup'

@@ -216,6 +216,63 @@ class API extends Resource {
     }
 
     /**
+     * Add a Subscription Throttling Policy
+     */
+    addSubscriptionThrottlingPolicy(body) {
+        return this.client.then((client) => {
+            const payload = {
+                body,
+                'Content-Type': 'application/json',
+            };
+            return client.apis['Subscription Policy (Collection)'].post_throttling_policies_subscription(
+                payload,
+                this._requestMetaData(),
+            );
+        });
+    }
+
+    /**
+     * Delete a Subscription Throttling Policy
+     */
+    deleteSubscriptionPolicy(policyId) {
+        return this.client.then((client) => {
+            return client.apis['Subscription Policy (Individual)'].delete_throttling_policies_subscription__policyId_(
+                { policyId: policyId },
+                this._requestMetaData(),
+            );
+        });
+    }
+
+    /**
+     * Update a Subscription Throttling Policy
+     */
+    updateSubscriptionThrottlingPolicy(policyId, body) {
+        return this.client.then((client) => {
+            const payload = {
+                policyId: policyId,
+                body,
+                'Content-Type': 'application/json',
+            };
+            return client.apis['Subscription Policy (Individual)'].put_throttling_policies_subscription__policyId_(
+                payload,
+                this._requestMetaData(),
+            );
+        });
+    }
+
+    /**
+     * Get details of a Subscription Throttling Policy
+     */
+    subscriptionThrottlingPolicyGet(policyId) {
+        return this.client.then((client) => {
+            return client.apis['Subscription Policy (Individual)'].get_throttling_policies_subscription__policyId_(
+                { policyId: policyId },
+                this._requestMetaData(),
+            );
+        });
+    }
+
+    /**
      * Add an Application Throttling Policy
      */
     addApplicationThrottlingPolicy(body) {
@@ -266,6 +323,17 @@ class API extends Resource {
     getApplicationList() {
         return this.client.then((client) => {
             return client.apis['Application (Collection)'].get_applications(
+                this._requestMetaData(),
+            );
+        });
+    }
+
+    /**
+     * Get Subscription Throttling Policies
+     */
+    getSubscritionPolicyList() {
+        return this.client.then((client) => {
+            return client.apis['Subscription Policy (Collection)'].get_throttling_policies_subscription(
                 this._requestMetaData(),
             );
         });
@@ -583,6 +651,121 @@ class API extends Resource {
             }),
         );
     }
+
+    /**
+     * @static
+     * Get the supported alert types for admin
+     * @return {Promise}
+     * */
+    getSupportedAlertTypes() {
+        return this.client.then((client) => {
+            return client.apis.Alerts.getAdminAlertTypes(this._requestMetaData());
+        });
+    }
+
+    /**
+     * @static
+     * Get the subscribed alert types by the current user.
+     * @returns {Promise}
+     * */
+    getSubscribedAlertTypesByUser() {
+        return this.client.then((client) => {
+            return client.apis['Alert Subscriptions']
+            .getSubscribedAlertTypes(this._requestMetaData());
+        });
+    }
+
+    /**
+     * @static
+     * Subscribe to the provided set of alerts.
+     * @return {Promise}
+     * */
+    subscribeAlerts(alerts) {
+        return this.client.then((client) => {
+            return client.apis['Alert Subscriptions']
+            .subscribeToAlerts({ body: alerts }, this._requestMetaData());
+        });
+    }
+
+    /**
+     * @static
+     * Unsubscribe from all the alerts.
+     * @return {Promise}
+     * */
+    unsubscribeAlerts() {
+        return this.client.then((client) => {
+            return client.apis['Alert Subscriptions']
+            .unsubscribeAllAlerts(this._requestMetaData());
+        });
+    }
+
+
+
+    /**
+     * Get lis of keymanagers Registrered
+     */
+    getKeyManagersList() {
+        return this.client.then((client) => {
+            return client.apis['Key Manager (Collection)'].get_key_managers(
+                this._requestMetaData(),
+            );
+        });
+    }
+
+        /**
+     * Get details of an Application Throttling Policy
+     */
+    keyManagerGet(keyManagerId) {
+        return this.client.then((client) => {
+            return client.apis['Key Manager (Individual)'].get_key_managers__keyManagerId_(
+                { keyManagerId: keyManagerId },
+                this._requestMetaData(),
+            );
+        });
+    }
+            /**
+     * Add an Key Manager
+     */
+    addKeyManager(body) {
+        return this.client.then((client) => {
+            const payload = {
+                body,
+                'Content-Type': 'application/json',
+            };
+            return client.apis['Key Manager (Collection)'].post_key_managers(
+                payload,
+                this._requestMetaData(),
+            );
+        });
+    }
+             /**
+     * Update an Key Manager
+     */
+    updateKeyManager(keyManagerId, body) {
+        return this.client.then((client) => {
+            const payload = {
+                keyManagerId: keyManagerId,
+                body,
+                'Content-Type': 'application/json',
+            };
+            return client.apis['Key Manager (Individual)'].put_key_managers__keyManagerId_(
+                payload,
+                this._requestMetaData(),
+            );
+        });
+    }
+    /**
+     * Delete an Key Manager
+     */
+    deleteKeyManager(keyManagerId) {
+        return this.client.then((client) => {
+            return client.apis['Key Manager (Individual)'].delete_key_managers__keyManagerId_(
+                {keyManagerId:keyManagerId},
+                this._requestMetaData(),
+            );
+        });
+    }
+
 }
 
 API.CONSTS = {
