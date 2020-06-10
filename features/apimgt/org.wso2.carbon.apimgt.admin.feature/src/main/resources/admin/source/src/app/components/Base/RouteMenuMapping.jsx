@@ -42,6 +42,14 @@ import ListDetectedBotData from 'AppComponents/BotDetection/DetectedBotData/List
 import ListEmails from 'AppComponents/BotDetection/EmailConfig/ListEmails';
 import KeyManagers from 'AppComponents/KeyManagers';
 import ManageAlerts from 'AppComponents/ManageAlerts/ManageAlerts.jsx';
+import GamesIcon from '@material-ui/icons/Games';
+import CategoryIcon from '@material-ui/icons/Category';
+import AndroidIcon from '@material-ui/icons/Android';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import PolicyIcon from '@material-ui/icons/Policy';
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import BlockIcon from '@material-ui/icons/Block';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 
 const RouteMenuMapping = (intl) => [
     {
@@ -51,7 +59,7 @@ const RouteMenuMapping = (intl) => [
         }),
         icon: <HomeIcon />,
         path: '/dashboard',
-        component: Dashboard,
+        component: () => <Dashboard />,
         exact: true,
     },
     {
@@ -66,7 +74,7 @@ const RouteMenuMapping = (intl) => [
                     defaultMessage: 'User Creation',
                 }),
                 path: '/tasks/user-creation',
-                component: DemoTable,
+                component: () => <DemoTable />,
                 icon: <PeopleIcon />,
             },
             {
@@ -75,7 +83,7 @@ const RouteMenuMapping = (intl) => [
                     defaultMessage: 'Application Creation',
                 }),
                 path: '/tasks/application-creation',
-                component: DemoTable,
+                component: () => <DemoTable />,
                 icon: <DnsRoundedIcon />,
             },
             {
@@ -84,19 +92,19 @@ const RouteMenuMapping = (intl) => [
                     defaultMessage: 'Subscription Creation',
                 }),
                 path: '/tasks/subscription-creation',
-                component: DemoTable,
+                component: () => <DemoTable />,
                 icon: <PermMediaOutlinedIcon />,
             },
             {
                 id: 'Application Registration',
                 path: '/tasks/application-registration',
-                component: DemoTable,
+                component: () => <DemoTable />,
                 icon: <PublicIcon />,
             },
             {
                 id: 'API State Change',
                 path: '/tasks/api-state-change',
-                component: DemoTable,
+                component: () => <DemoTable />,
                 icon: <SettingsEthernetIcon />,
             },
         ],
@@ -125,8 +133,8 @@ const RouteMenuMapping = (intl) => [
             defaultMessage: 'API Categories',
         }),
         path: '/settings/api-categories',
-        component: APICategories,
-        icon: <PhonelinkSetupIcon />,
+        component: () => <APICategories />,
+        icon: <CategoryIcon />,
     },
     {
         id: intl.formatMessage({
@@ -140,8 +148,8 @@ const RouteMenuMapping = (intl) => [
                     defaultMessage: 'Bot Detection Data',
                 }),
                 path: '/settings/bot-detection/bot-detected-data-list',
-                component: ListDetectedBotData,
-                icon: <DnsRoundedIcon />,
+                component: () => <ListDetectedBotData />,
+                icon: <AndroidIcon />,
             },
             {
                 id: intl.formatMessage({
@@ -149,8 +157,8 @@ const RouteMenuMapping = (intl) => [
                     defaultMessage: 'Configure Emails',
                 }),
                 path: '/settings/bot-detection/bot-detection-email-configuration',
-                component: ListEmails,
-                icon: <PhonelinkSetupIcon />,
+                component: () => <ListEmails />,
+                icon: <MailOutlineIcon />,
             },
         ],
     },
@@ -166,7 +174,7 @@ const RouteMenuMapping = (intl) => [
                     defaultMessage: 'Applications',
                 }),
                 path: '/settings/applications',
-                component: ListApplications,
+                component: () => <ListApplications />,
                 icon: <SettingsIcon />,
             },
             {
@@ -175,7 +183,7 @@ const RouteMenuMapping = (intl) => [
                     defaultMessage: 'Scope Mapping',
                 }),
                 path: '/settings/scope-mapping',
-                component: DemoTable,
+                component: () => <DemoTable />,
                 icon: <TimerIcon />,
             },
             {
@@ -184,7 +192,7 @@ const RouteMenuMapping = (intl) => [
                     defaultMessage: 'Tenant Theme',
                 }),
                 path: '/settings/devportal-theme',
-                component: TenantTheme,
+                component: () => <TenantTheme />,
                 icon: <PhonelinkSetupIcon />,
             },
         ],
@@ -201,8 +209,8 @@ const RouteMenuMapping = (intl) => [
                     defaultMessage: 'Advanced Policies',
                 }),
                 path: '/throttling/advanced',
-                component: AdvancedThrottlePolicies,
-                icon: <SettingsIcon />,
+                component: () => <AdvancedThrottlePolicies />,
+                icon: <PolicyIcon />,
             },
             {
                 id: intl.formatMessage({
@@ -210,8 +218,8 @@ const RouteMenuMapping = (intl) => [
                     defaultMessage: 'Application Policies',
                 }),
                 path: '/throttling/application',
-                component: ApplicationThrottlingPolicies,
-                icon: <TimerIcon />,
+                component: () => <ApplicationThrottlingPolicies />,
+                icon: <PhonelinkSetupIcon />,
             },
             {
                 id: intl.formatMessage({
@@ -228,8 +236,8 @@ const RouteMenuMapping = (intl) => [
                     defaultMessage: 'Custom Policies',
                 }),
                 path: '/throttling/custom',
-                component: CustomThrottlingPolicies,
-                icon: <PhonelinkSetupIcon />,
+                component: () => <CustomThrottlingPolicies />,
+                icon: <AssignmentIcon />,
             },
             {
                 id: intl.formatMessage({
@@ -237,8 +245,8 @@ const RouteMenuMapping = (intl) => [
                     defaultMessage: 'Deny Policies',
                 }),
                 path: '/throttling/blacklisted',
-                component: BlacklistThrottlingPolicies,
-                icon: <PhonelinkSetupIcon />,
+                component: () => <BlacklistThrottlingPolicies />,
+                icon: <BlockIcon />,
             },
         ],
     },

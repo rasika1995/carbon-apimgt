@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
-import { injectIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -70,8 +70,9 @@ const styles = (theme) => ({
  */
 function Navigator(props) {
     const {
-        classes, intl, history, ...other
+        classes, history, ...other
     } = props;
+    const intl = useIntl();
     const matchMenuPath = (currentRoute, pathToMatch) => {
         return (currentRoute.indexOf(pathToMatch) !== -1);
     };
@@ -120,7 +121,7 @@ function Navigator(props) {
                 }) => (
                     <>
                         {!children && (
-                            <Link component={RouterLink} to={parentPath}>
+                            <Link component={RouterLink} to={parentPath} style={{ textDecoration: 'none' }}>
                                 <ListItem
                                     className={clsx(
                                         classes.item,
@@ -158,4 +159,4 @@ Navigator.propTypes = {
     classes: PropTypes.shape({}).isRequired,
 };
 
-export default injectIntl(withRouter(withStyles(styles)(Navigator)));
+export default withRouter(withStyles(styles)(Navigator));
